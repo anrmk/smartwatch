@@ -1,8 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid d-flex flex-column" style="height: calc(100vh - 65px)">
+    <div class="row h-75 map-container flex-fill map-container" id="map-container">
+    </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(() => {
+            new MapController({ controller: '/api/devicelocation', containerInfo: '.sidebar-content' });
+        })
+    </script>
+}

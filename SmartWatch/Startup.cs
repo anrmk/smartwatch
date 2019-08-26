@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Core.Context;
+using Core.Managers;
+using Core.Services.Business;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SmartWatch.App_Config;
+using SmartWatch.Hubs;
 
 namespace SmartWatch {
     public class Startup {
@@ -25,8 +27,25 @@ namespace SmartWatch {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // Registering Automapper
+            MapperConfig.Register();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSignalR();
+
+            // Additional configuration for Npgsql
+            services.AddDbContext<ApplicationContext>(options => {
+                options.UseNpgsql("Host=localhost;Database=smartwatch;Username=postgres;Password=postgres");
+            });
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationContext>().BuildServiceProvider();
+
+            services.AddScoped<IApplicationContext, ApplicationContext>();
+
+            services.AddTransient<IDeviceManager, DeviceManager>();
+            services.AddTransient<IDeviceLocationManager, DeviceLocationManager>();
+            services.AddTransient<IDeviceLastLocationManager, DeviceLastLocationManager>();
+
+            services.AddTransient<ILocationBusinessService, LocationBusinessService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,12 +58,20 @@ namespace SmartWatch {
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseSignalR(routes => {
+                routes.MapHub<DeviceLocationHub>("/deviceLocationHub");
+            });
             app.UseMvc(routes => {
+                routes.MapRoute(
+                    name: "api",
+                    template: "api/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
         }
     }
 }
