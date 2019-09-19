@@ -44,13 +44,18 @@ namespace SmartWatch {
             services.AddTransient<IDeviceManager, DeviceManager>();
             services.AddTransient<IDeviceLocationManager, DeviceLocationManager>();
             services.AddTransient<IDeviceLastLocationManager, DeviceLastLocationManager>();
+            services.AddTransient<IProfileCardManager, ProfileCardManager>();
+            services.AddTransient<IProfileCardMediaManager, ProfileCardMediaManager>();
+            services.AddTransient<IIndicatorManager, IndicatorManager>();
 
             services.AddTransient<ILocationBusinessService, LocationBusinessService>();
+            services.AddTransient<IProfileCardBusinessService, ProfileCardBusinessService>();
+            services.AddTransient<IIndicatorBusinessService, IndicatorBusinessService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
-            if (env.IsDevelopment()) {
+            if(env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             } else {
                 app.UseExceptionHandler("/Home/Error");
@@ -61,17 +66,20 @@ namespace SmartWatch {
             app.UseSignalR(routes => {
                 routes.MapHub<DeviceLocationHub>("/deviceLocationHub");
             });
-            app.UseMvc(routes => {
-                routes.MapRoute(
-                    name: "api",
-                    template: "api/{controller=Home}/{action=Index}/{id?}");
 
+            app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "area",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "api",
+                    template: "api/{controller=Home}/{action=Index}/{id?}");
             });
-
-
         }
     }
 }

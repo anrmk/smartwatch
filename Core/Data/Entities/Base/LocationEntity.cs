@@ -4,7 +4,7 @@ namespace Core.Entities.Base {
     /// <summary>
     /// Координаты устройств
     /// </summary>
-    public class LocationEntity : Entity<long> {
+    public class LocationEntity: Entity<long> {
         /// <summary>
         /// Широта
         /// </summary>

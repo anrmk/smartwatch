@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Core.Dto;
+using SmartWatch.Areas.Admin.Data.ViewModels;
 
 namespace SmartWatch.App_Config {
     public class MapperConfig: Profile {
@@ -14,7 +12,15 @@ namespace SmartWatch.App_Config {
         }
 
         public MapperConfig() {
+            CreateMap<DeviceViewModel, DeviceDto>();
 
+            CreateMap<ProfileViewModel, ProfileCardDto>();
+            CreateMap<ProfileCardGeneralViewModel, ProfileCardGeneralDto>();
+            CreateMap<ProfileCardAdditionalViewModel, ProfileCardAdditionalDto>();
+
+            CreateMap<ProfileCardMediaViewModel, ProfileCardMediaDto>()
+                .ForMember(d => d.Thumbnail, o => o.MapFrom(s => s.Source))
+                .ForMember(d => d.ThumbnailSrc, o => o.MapFrom(s => s.Src));
         }
     }
 }

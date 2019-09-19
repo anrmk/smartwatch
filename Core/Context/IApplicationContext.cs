@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Core.Context {
     public interface IApplicationContext {
         Database ApplicationDatabase { get; }
-       // DbContextConfiguration ApplicationDatabaseConfiguration { get; }
+        // DbContextConfiguration ApplicationDatabaseConfiguration { get; }
 
         /// <summary>
         /// Получение набора данных

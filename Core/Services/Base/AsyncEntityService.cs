@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
-using Core.Context;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Core.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services.Base {
@@ -12,7 +11,7 @@ namespace Core.Services.Base {
     /// Абстрактный сервис данных
     /// </summary>
     /// <typeparam name="T">Тип данных, с которым работает сервис</typeparam>
-    public abstract class AsyncEntityService<T> : IEntityService<T> where T : class {
+    public abstract class AsyncEntityService<T>: IEntityService<T> where T : class {
         protected IApplicationContext Context;
 
         public bool ShareContext { get; set; } = false;
@@ -40,7 +39,7 @@ namespace Core.Services.Base {
             try {
                 var x = (await DbSet.ToListAsync()).AsQueryable();
                 return x;
-            } catch (Exception exception) {
+            } catch(Exception exception) {
                 throw exception;
             }
         }
@@ -88,11 +87,11 @@ namespace Core.Services.Base {
         public virtual async Task<T> Create(T TObject) {
             try {
                 var entry = DbSet.Add(TObject);
-                if (!ShareContext)
+                if(!ShareContext)
                     await Context.SaveChangesAsync();
 
                 return entry.Entity;
-            } catch (Exception ex) {
+            } catch(Exception ex) {
                 throw ex;
             }
         }
@@ -104,7 +103,7 @@ namespace Core.Services.Base {
         /// <returns>Целочисленный результат SaveChangesAsync</returns>
         public virtual async Task<int> Delete(T t) {
             DbSet.Remove(t);
-            if (!ShareContext)
+            if(!ShareContext)
                 return await Context.SaveChangesAsync();
             return 0;
         }
@@ -118,7 +117,7 @@ namespace Core.Services.Base {
             var entry = Context.Entry(t);
             DbSet.Attach(t);
             entry.State = EntityState.Modified;
-            if (!ShareContext)
+            if(!ShareContext)
                 return await Context.SaveChangesAsync();
             return 0;
         }
@@ -132,7 +131,7 @@ namespace Core.Services.Base {
             var entry = Context.Entry(t);
             DbSet.Attach(t);
             entry.State = EntityState.Modified;
-            if (!ShareContext)
+            if(!ShareContext)
                 await Context.SaveChangesAsync();
             return t;
         }
@@ -143,11 +142,11 @@ namespace Core.Services.Base {
         /// <param name="t">Типизированный параметр</param>
         /// <returns>Типизированный результат SaveChangesAsync</returns>
         public virtual async Task<IEnumerable<T>> UpdateType(IEnumerable<T> l) {
-            foreach (var t in l) {
+            foreach(var t in l) {
                 var entry = Context.Entry(t);
                 DbSet.Attach(t);
                 entry.State = EntityState.Modified;
-                if (!ShareContext)
+                if(!ShareContext)
                     await Context.SaveChangesAsync();
             }
             return l;
@@ -160,9 +159,9 @@ namespace Core.Services.Base {
         /// <returns>Целочисленный результат SaveChangesAsync</returns>
         public virtual async Task<int> Delete(Expression<Func<T, bool>> predicate) {
             var objects = await Filter(predicate);
-            foreach (var obj in objects)
+            foreach(var obj in objects)
                 DbSet.Remove(obj);
-            if (!ShareContext)
+            if(!ShareContext)
                 return await Context.SaveChangesAsync();
             return 0;
         }
@@ -197,13 +196,13 @@ namespace Core.Services.Base {
             var query = where is null ? DbSet.AsQueryable() : DbSet.Where(where).AsQueryable();
             int count = await query.CountAsync();
 
-            if (order is null) {
+            if(order is null) {
                 query = query.Skip(offset);
             } else {
                 query = descSort ? query.OrderByDescending(order).Skip(offset) : query.OrderBy(order).Skip(offset);
             }
 
-            foreach (var prop in properties)
+            foreach(var prop in properties)
                 query = query.Include(prop);
 
             query = query.Take(limit);

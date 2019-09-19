@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Core.Dto {
+﻿namespace Core.Dto {
     public class LocationDto {
         public double Latitude { get; set; }
         public double Longitude { get; set; }
@@ -11,6 +7,6 @@ namespace Core.Dto {
         public double Speed { get; set; }
         public double Direction { get; set; }
         public bool IsFromMockProvider { get; set; }
-        public DateTimeOffset Timestamp { get; set; }
+        public long Timestamp { get; set; }
     }
 }

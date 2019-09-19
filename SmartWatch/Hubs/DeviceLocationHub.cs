@@ -1,16 +1,16 @@
-﻿using Core.Dto;
-using Core.Services.Business;
-using Microsoft.AspNetCore.SignalR;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Dto;
+using Core.Services.Business;
+using Microsoft.AspNetCore.SignalR;
 
 namespace SmartWatch.Hubs {
     public interface IDeviceLocationHub {
         Task SendAsync(string method, object args);
     }
 
-    public class DeviceLocationHub : Hub {
+    public class DeviceLocationHub: Hub {
         public readonly ILocationBusinessService LocationService;
 
         public DeviceLocationHub(ILocationBusinessService locationBusinessService) {

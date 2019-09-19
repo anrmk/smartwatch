@@ -6,7 +6,7 @@ namespace Core.Entities.Base {
     /// Сушность с метками аудита
     /// </summary>
     /// <typeparam name="T">Тип сущности</typeparam>
-    public abstract class AuditableEntity<T> : Entity<T>, IAuditableEntity {
+    public abstract class AuditableEntity<T>: Entity<T>, IAuditableEntity {
         /// <summary>
         /// Дата создания
         /// </summary>

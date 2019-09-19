@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Список пользователей";
+    Layout = "_Layout";
+}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2 class="h2">@ViewBag.Title</h2>
+</div>
+<div>
+    <div class="table-toolbar mb-3">
+        <a name="createBtn" data-action="create" class="btn btn-outline-secondary" asp-route="CreateProfileCard"><i class="fa fa-plus mr-1"></i> Создать</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover table-sm table-container"
+               data-url="/api/profilecard/list" data-toggle="table"
+               data-pagination="true">
+            <thead class="text-center">
+                <tr>
+                    <th data-checkbox="true" rowspan="2"></th>
+                    <th colspan="3">ФИО</th>
+                    <th colspan="2">Дата рождения и место проживания</th>
+                    <th colspan="2">Пульс</th>
+                    <th data-field="phoneNumber" rowspan="2" data-sortable="true">Номер телефона</th>
+                    <th rowspan="2" data-field="Id" data-formatter="operateFormatter" data-events="operateEvents" data-align="center">Действие</th>
+                </tr>
+                <tr>
+                    <th data-field="name" data-sortable="true">Имя</th>
+                    <th data-field="surname" data-sortable="true">Фамилия</th>
+                    <th data-field="middlename" data-sortable="true">Отчество</th>
+                    <th data-field="birthDate" data-sortable="true">Дата</th>
+                    <th data-field="address">Адрес</th>
+                    <th data-field="systolic">Систол-е</th>
+                    <th data-field="diastolic">Диастол-е</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function operateFormatter(value, row, index) {
+            return [
+                `<a class="edit mr-2" href="javascript:void(0)" title="Редактировать"><i class="fa fa-edit"></i></a>
+                     <a class="remove" href="javascript:void(0)" title="Удалить"><i class="fa fa-trash"></i></a>`
+            ].join('')
+        }
+
+        window.operateEvents = {
+            'click .edit': function (e, value, row, index) {
+                window.location = `/admin/profilecard/edit/${row.id}`
+            },
+            'click .remove': function (e, value, row, index) {
+                if (confirm('Вы действительно хотите удалить запись?')) {
+                    let options = {
+                        'url': `/api/profilecard/delete/${row.id}`,
+                        'contentType': this.contentType,
+                        'processData': false,
+                        'type': 'DELETE',
+                        'success': (data, textStatus, jqXHR) => {
+                            $('.table').bootstrapTable('remove', {
+                                field: 'id',
+                                values: [row.id]
+                            })
+                        }
+                    };
+                    $.ajax(options);
+                }
+            }
+        }
+    </script>
+}

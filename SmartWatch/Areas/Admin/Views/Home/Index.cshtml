@@ -1,0 +1,81 @@
+﻿@model SmartWatch.Areas.Admin.Data.ViewModels.IndicatorViewModel
+@{
+    ViewData["Title"] = "Показатели";
+    Layout = "_Layout";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/lib/highcharts/css/highcharts.css" />
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2 class="h2">@ViewBag.Title</h2>
+</div>
+
+<div class="row mb-3">
+    <div class="col-sm">
+        <form class="form" asp-route="GetIndicatorsApi">
+            <div class="form-row align-items-end">
+                <div class="col">
+                    <label for="inputEmail4">Данные за</label>
+                    <input asp-for="StartFrom" class="form-control" required />
+                </div>
+                <div class="col">
+                    <input asp-for="EndTill" class="form-control" required />
+                </div>
+                <div class="col">
+                    <button class="btn btn-success" value="">Показать</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm">
+        One of three columns
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-body">
+                <div id="firstDiag" data-title="Общее количество зарегистрированных устройств"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-body">
+                <div id="secondDiag"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/highcharts/highcharts.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(document).ready(() => {
+            var options = {
+                'contentType': 'application/json; charset=utf-8',
+                'url': '/api/indicator/list',
+                'processData': false,
+                'beforeSend': (jqXHR, settings) => { },
+                'complete': (jqXHR, settings) => { }
+            }
+
+            $.ajax(options).done((data, status, jqXHR) => {
+                Highcharts.chart('firstDiag', $.extend({
+                    title: {
+                        text: 'Устройства'
+                    },
+
+                    subtitle: {
+                        text: 'Количество зарегистрированных устройст за период'
+                    },
+
+                    xAxis: {
+                        categories: data[0].categories
+                    }
+                }, data[0]))
+            });
+        });
+    </script>
+}

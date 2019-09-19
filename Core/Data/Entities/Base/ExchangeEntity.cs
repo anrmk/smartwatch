@@ -1,14 +1,14 @@
-﻿using Core.Entities.Base;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Core.Entities.Base;
 
 namespace Core.Base {
     /// <summary>
     /// Сушность с метками аудита
     /// </summary>
     /// <typeparam name="T">Тип сущности</typeparam>
-    public abstract class ExchangeEntity<T> : Entity<T>, IAuditableEntity {
+    public abstract class ExchangeEntity<T>: Entity<T>, IAuditableEntity {
         /// <summary>
         /// Расширение файла (xls, jpg и тд)
         /// </summary>

@@ -1,0 +1,188 @@
+﻿@model SmartWatch.Areas.Admin.Data.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = Model.Id > 0 ? "Редактирование карточки профиля" : "Создание карточки профиля";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2 class="h2">@ViewBag.Title</h2>
+</div>
+
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-route="ListProfileCard">Список</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@(Model.Id > 0 ? Model.General.Name : "Новое профиль")</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-8 order-md-1">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-general" role="tabpanel" aria-labelledby="v-pills-general-tab">
+                <form class="form" asp-route="@(Model.Id > 0 ? "UpdateProfileCardGeneralApi" : "CreateProfileCardApi")" method="@(Model.Id > 0 ? "put" : "post")">
+                    <fieldset>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="Id" type="hidden" />
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label asp-for="General.Surname"></label>
+                                <input asp-for="General.Surname" class="form-control" name="Surname" />
+                                <span asp-validation-for="General.Surname" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label asp-for="General.Name"></label>
+                                <input asp-for="General.Name" class="form-control" name="Name" />
+                                <span asp-validation-for="General.Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label asp-for="General.Middlename"></label>
+                                <input asp-for="General.Middlename" class="form-control" name="Middlename" />
+                                <span asp-validation-for="General.Middlename" class="text-danger"></span>
+
+                                @*<select asp-for="" class="form-control" asp-items="Html.GetEnumSelectList<Core.Enums.DeviceStatusEnum>()">
+                                    </select>*@
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label asp-for="General.BirthDate"></label>
+                                <input asp-for="General.BirthDate" class="form-control" name="BirthDate" type="date" />
+                                <span asp-validation-for="General.BirthDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <h4>Контакты</h4>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label asp-for="General.PhoneNumber"></label>
+                                <input asp-for="General.PhoneNumber" class="form-control" name="PhoneNumber" type="tel" placeholder="+7-777-777-7777" />
+                                <span asp-validation-for="General.PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label asp-for="General.Address"></label>
+                                <input asp-for="General.Address" class="form-control" name="Address" />
+                                <span asp-validation-for="General.Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <a class="btn-link mr-3"  asp-area="Admin" asp-route="ListProfileCard">Отмена</a>
+                        <input type="submit" class="btn btn-primary" value="Сохранить" />
+                    </fieldset>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="v-pills-additional" role="tabpanel" aria-labelledby="v-pills-additional-tab">
+                <form class="form" asp-route="@(Model.Id > 0 ? "UpdateProfileCardAdditionalApi" : "")" method="put">
+                    <fieldset>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="Id" type="hidden" />
+                        <div class="form-group form-row">
+                            <div class="col-md-4">
+                                <label asp-for="Additional.Systolic"></label>
+                                <input asp-for="Additional.Systolic" class="form-control" name="Systolic" />
+                                <span for="Systolic" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Additional.Diastolic"></label>
+                                <input asp-for="Additional.Diastolic" class="form-control" name="Diastolic" />
+                                <span for="Diastolic" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group form-row">
+                            <div class="col-md-4">
+                                <label asp-for="Additional.DeviceId"></label>
+                                @*@Html.DropDownListFor(m => m.Additional.DeviceId, new SelectList(ViewBag.Devices, "Id", "Name", Model.Additional.DeviceId), "Выберите значение", new { @class = "form-control", @Name = "DeviceId", @id="DeviceId" })*@
+
+                                <select asp-for="Additional.DeviceId" class="form-control" name="DeviceId" id="DeviceId" asp-items="@ViewBag.Devices"></select>
+                                <span asp-validation-for="Additional.DeviceId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <a class="btn-link mr-3" asp-area="Admin" asp-route="ListProfileCard">Отмена</a>
+                        <input type="submit" class="btn btn-primary" value="Сохранить" />
+                    </fieldset>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="v-pills-media" role="tabpanel" aria-labelledby="v-pills-media-tab">
+                <form class="form upload" asp-route="UploadProfileCardMediaApi" method="post" enctype="multipart/form-data" data-action="upload" data-target="#mediaContainer">
+                    <fieldset>
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="files" name="files" multiple="multiple" aria-describedby="fileUploadBtn" required>
+                                        <label class="custom-file-label" for="files">Выберите файл</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-secondary " type="submit" id="fileUploadBtn">
+                                            <i class="fa fa-upload mr-1"></i> Загрузить
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-columns" id="mediaContainer">
+                            @if(Model.Medias != null && Model.Medias.Count > 0) {
+                                foreach(var media in Model.Medias) {
+                                    <form class="form card p-1" id="mediaCard@media.Id" method="delete" asp-route="DeleteProfileCardMediaApi" asp-route-id="@media.Id" data-action="delete">
+                                        <img class='card-img-top' data-id='@media.Id' src='@media.Src' title='@media.Name' />
+                                        <input type="submit" class="btn btn-primary btn-block btn-sm mt-1" value="Удалить" />
+                                    </form>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="v-pills-events" role="tabpanel" aria-labelledby="v-pills-events-tab">
+                События
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 order-md-2 mb-4">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-general-tab" data-toggle="pill" href="#v-pills-general" role="tab" aria-controls="v-pills-general" aria-selected="true"><i class="fa fa-id-card mr-1"></i>Общая информация</a>
+            <a class="nav-link @(Model.Id > 0 ? "enabled": "disabled")" id="v-pills-additional-tab" data-toggle="pill" href="#v-pills-additional" role="tab" aria-controls="v-pills-additional" aria-selected="false"><i class="fa fa-balance-scale-right"></i> Дополнительно</a>
+            <a class="nav-link @(Model.Id > 0 ? "enabled": "disabled")" id="v-pills-media-tab" data-toggle="pill" href="#v-pills-media" role="tab" aria-controls="v-pills-media" aria-selected="false"><i class="fa fa-images mr-1"></i> Медиа</a>
+            <a class="nav-link @(Model.Id > 0 ? "enabled": "disabled")" id="v-pills-events-tab" data-toggle="pill" href="#v-pills-events" role="tab" aria-controls="v-pills-events" aria-selected="false"><i class="fa fa-calendar-alt mr-1"></i> События</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        window.Crud = new CrudController({}, ($form, data, status, controller) => {
+            if (status === 'success') {
+                var action = $form.data('action');
+                switch (action) {
+                    case 'delete':
+                        $form.fadeOut(1000, function () {
+                            this.remove();
+                        });
+                        break;
+                    case 'create':
+                        break;
+                    case 'upload':
+                        var mediaContainer = $($form.data('target'));
+                        data.map((source, index) => {
+                            var media = $(`<form class="form card p-1" id="mediaCard${source.id}" method="delete" action="/api/ProfileCard/media/${source.id}" data-action="delete">
+                                                    <img class='card-img-top' data-id='${source.id}' src='${source.src}' title='${source.name}' />
+                                                    <input type="submit" class="btn btn-primary btn-block btn-sm mt-1" value="Удалить" />
+                                                </form>`);
+                            media.appendTo(mediaContainer);
+                        });
+                        //controller.init();
+                        break;
+                    default:
+                        return;
+                }
+            } else if (status === 'error') {
+                alert(data);
+            }
+
+        });
+    </script>
+}

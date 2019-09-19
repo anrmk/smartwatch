@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Core.Services.Base {
-    public interface IEntityService<T> : IService where T : class {
+    public interface IEntityService<T>: IService where T : class {
         Task<IQueryable<T>> All();
         Task<IQueryable<T>> Filter(Expression<Func<T, bool>> where);
         Task<IQueryable<T>> Filter<Key>(Expression<Func<T, bool>> where, int index, int limit);

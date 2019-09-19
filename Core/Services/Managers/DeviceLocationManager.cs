@@ -1,17 +1,17 @@
-﻿using Core.Context;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Core.Context;
 using Core.Entities;
 using Core.Services.Base;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Core.Managers {
-    public interface IDeviceLocationManager : IEntityService<DeviceLocationEntity> {
+    public interface IDeviceLocationManager: IEntityService<DeviceLocationEntity> {
         Task<List<DeviceLocationEntity>> FindById(long id);
     }
 
-    public class DeviceLocationManager : AsyncEntityService<DeviceLocationEntity>, IDeviceLocationManager {
+    public class DeviceLocationManager: AsyncEntityService<DeviceLocationEntity>, IDeviceLocationManager {
         public DeviceLocationManager(IApplicationContext context) : base(context) {
         }
 

@@ -1,0 +1,89 @@
+﻿@model SmartWatch.Areas.Admin.Data.ViewModels.DeviceViewModel
+
+@{
+    ViewData["Title"] = Model.Id > 0 ? "Редактирование карточки устройства" : "Создание карточки устройства";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2 class="h2">@ViewBag.Title</h2>
+</div>
+
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-route="ListDevice" >Список</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@(Model.Id > 0 ? Model.Imei : "Новое устройстов")</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-8 order-md-1">
+        <form class="form" asp-route="@(Model.Id > 0 ? "UpdateDeviceApi" : "CreateDeviceApi")" method="@(Model.Id > 0 ? "PUT" : "POST")">
+            <fieldset>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Id" type="hidden" />
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Imei"></label>
+                        <input asp-for="Imei" class="form-control" />
+                        <span asp-validation-for="Imei" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Status"></label>
+                        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<Core.Enums.DeviceStatusEnum>()">
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Model"></label>
+                        <input asp-for="Model" class="form-control" />
+                        <span asp-validation-for="Model" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Manufacturer"></label>
+                        <input asp-for="Manufacturer" class="form-control" />
+                        <span asp-validation-for="Manufacturer" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group form-row">
+                    <div class="col-md-4">
+                        <label asp-for="Version"></label>
+                        <input asp-for="Version" class="form-control" />
+                        <span asp-validation-for="Version" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Platform"></label>
+                        <input asp-for="Platform" class="form-control" />
+                        <span asp-validation-for="Platform" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Idiom"></label>
+                        <input asp-for="Idiom" class="form-control" />
+                        <span asp-validation-for="Idiom" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <a class="btn-link mr-3"  asp-area="Admin" asp-route="ListDevice">Отмена</a>
+                <input type="submit" class="btn btn-primary" value="Сохранить" />
+            </fieldset>
+        </form>
+    </div>
+    <div class="col-md-4 order-md-2 mb-4">
+
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        window.Crud = new CrudController();
+    </script>
+}

@@ -1,16 +1,15 @@
-﻿using Core.Entities.Base;
-using Core.Enums;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Core.Entities.Base;
+using Core.Enums;
 
 namespace Core.Entities {
     /// <summary>
     /// Оборудование (планшеты)
     /// </summary>
     [Table(name: "Devices")]
-    public class DeviceEntity : Entity<long> {
+    public class DeviceEntity: AuditableEntity<long> {
         /// <summary>
         /// Device IMEI code 
         /// </summary>
@@ -41,6 +40,10 @@ namespace Core.Entities {
         /// Idiom (Phone/ Tablet)
         /// </summary>
         public string Idiom { get; set; }
+
+        [ForeignKey("ProfileCard")]
+        public long? ProfileCardEntityId { get; set; }
+        public virtual ProfileCardEntity ProfileCard { get; set; }
 
         /// <summary>
         /// Координаты оборудования

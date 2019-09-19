@@ -1,16 +1,16 @@
-﻿using Core.Context;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Core.Context;
 using Core.Entities;
 using Core.Services.Base;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Core.Managers {
-    public interface IDeviceLastLocationManager : IEntityService<DeviceLastLocationEntity> {
-            Task<List<DeviceLastLocationEntity>> FindAll();
+    public interface IDeviceLastLocationManager: IEntityService<DeviceLastLocationEntity> {
+        Task<List<DeviceLastLocationEntity>> FindAll();
     }
 
-    public class DeviceLastLocationManager : AsyncEntityService<DeviceLastLocationEntity>, IDeviceLastLocationManager {
+    public class DeviceLastLocationManager: AsyncEntityService<DeviceLastLocationEntity>, IDeviceLastLocationManager {
         public DeviceLastLocationManager(IApplicationContext context) : base(context) {
         }
 

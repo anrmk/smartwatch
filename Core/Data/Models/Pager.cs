@@ -16,13 +16,13 @@ namespace Core.Models {
             var currentPage = page != null ? (int)page : 1;
             var startPage = currentPage - 5;
             var endPage = currentPage + 4;
-            if (startPage <= 0) {
+            if(startPage <= 0) {
                 endPage -= (startPage - 1);
                 startPage = 1;
             }
-            if (endPage > totalPages) {
+            if(endPage > totalPages) {
                 endPage = totalPages;
-                if (endPage > 10) {
+                if(endPage > 10) {
                     startPage = endPage - 9;
                 }
             }

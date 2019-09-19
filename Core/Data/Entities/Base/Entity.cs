@@ -20,7 +20,7 @@ namespace Core.Entities.Base {
     /// Сущность
     /// </summary>
     /// <typeparam name="T">Тип сущности</typeparam>
-    public abstract class Entity<T> : BaseEntity, IEntity<T> {
+    public abstract class Entity<T>: BaseEntity, IEntity<T> {
         /// <summary>
         /// Первичный ключ
         /// </summary>

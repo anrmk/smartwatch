@@ -3,16 +3,20 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
+      "library": "jquery@3.4.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.js",
+        "jquery.min.js"
+      ]
+    },
+    {
       "library": "font-awesome@5.9.0",
-      "destination": "wwwroot/lib"
+      "destination": "wwwroot/lib/font-awesome"
     },
     {
       "library": "leaflet@1.5.1",
       "destination": "wwwroot/lib/leaflet/"
-    },
-    {
-      "library": "signalr.js@2.4.0",
-      "destination": "wwwroot/lib/signalr/"
     },
     {
       "library": "aspnet-signalr@1.1.4",
@@ -20,13 +24,25 @@
     },
     {
       "provider": "unpkg",
-      "library": "@aspnet/signalr@1.0.3",
-      "destination": "wwwroot/lib/signalr/"
+      "library": "bootstrap-table@1.15.4",
+      "destination": "wwwroot/lib/bootstrap-table/"
     },
     {
-      "provider": "unpkg",
-      "library": "bootstrap-table@1.15.4",
-      "destination": "wwwroot/bootstrap-table/"
-    }
+      "library": "highcharts@7.2.0",
+      "destination": "wwwroot/lib/highcharts/"
+    },
+    {
+      "provider": "filesystem",
+      "library": "https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js",
+      "destination": "wwwroot/lib/bootstrap-custom-file-input/",
+      "files": [
+        "bs-custom-file-input.min.js"
+      ]
+    },
+    {
+      "provider": "git",
+      "library": "https://github.com/marioizquierdo/jquery.serializeJSON.git",
+      "destination": "wwwroot/lib/jquery-serializejson/"
+    },
   ]
 }

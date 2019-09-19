@@ -1,5 +1,3 @@
-using System;
-
 namespace SmartWatch.Models {
     public class ErrorViewModel {
         public string RequestId { get; set; }

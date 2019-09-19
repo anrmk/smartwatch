@@ -26,6 +26,11 @@ namespace Core.Migrations
 
                     b.Property<string>("Code");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("CreatedDate");
+
                     b.Property<string>("Idiom");
 
                     b.Property<string>("Imei")
@@ -39,11 +44,21 @@ namespace Core.Migrations
 
                     b.Property<string>("Platform");
 
+                    b.Property<long?>("ProfileCardEntityId");
+
                     b.Property<int>("Status");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("UpdatedDate");
 
                     b.Property<string>("Version");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileCardEntityId")
+                        .IsUnique();
 
                     b.ToTable("Devices");
                 });
@@ -116,6 +131,95 @@ namespace Core.Migrations
                     b.ToTable("DeviceLocations");
                 });
 
+            modelBuilder.Entity("Core.Entities.ProfileCardEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(512);
+
+                    b.Property<DateTime>("BirthDate");
+
+                    b.Property<string>("Code");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<long?>("DeviceEntity_Id");
+
+                    b.Property<int>("Diastolic");
+
+                    b.Property<string>("Middlename")
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(12);
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<int>("Systolic");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("UpdatedDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceEntity_Id");
+
+                    b.ToTable("ProfileCards");
+                });
+
+            modelBuilder.Entity("Core.Entities.ProfileCardMediaEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Code");
+
+                    b.Property<string>("ContentType");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<string>("Name");
+
+                    b.Property<long?>("ProfileCardId")
+                        .HasColumnName("ProfileCardEntity_Id");
+
+                    b.Property<byte[]>("Source");
+
+                    b.Property<byte[]>("Thumbnail");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("UpdatedDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileCardId");
+
+                    b.ToTable("ProfileCardMedias");
+                });
+
+            modelBuilder.Entity("Core.Entities.DeviceEntity", b =>
+                {
+                    b.HasOne("Core.Entities.ProfileCardEntity", "ProfileCard")
+                        .WithOne()
+                        .HasForeignKey("Core.Entities.DeviceEntity", "ProfileCardEntityId");
+                });
+
             modelBuilder.Entity("Core.Entities.DeviceLastLocationEntity", b =>
                 {
                     b.HasOne("Core.Entities.DeviceEntity", "Device")
@@ -128,6 +232,20 @@ namespace Core.Migrations
                     b.HasOne("Core.Entities.DeviceEntity", "Device")
                         .WithMany("Locations")
                         .HasForeignKey("DeviceEntity_Id");
+                });
+
+            modelBuilder.Entity("Core.Entities.ProfileCardEntity", b =>
+                {
+                    b.HasOne("Core.Entities.DeviceEntity", "Device")
+                        .WithMany()
+                        .HasForeignKey("DeviceEntity_Id");
+                });
+
+            modelBuilder.Entity("Core.Entities.ProfileCardMediaEntity", b =>
+                {
+                    b.HasOne("Core.Entities.ProfileCardEntity", "ProfileCard")
+                        .WithMany("Medias")
+                        .HasForeignKey("ProfileCardId");
                 });
 #pragma warning restore 612, 618
         }

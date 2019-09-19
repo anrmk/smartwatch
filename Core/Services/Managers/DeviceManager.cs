@@ -1,17 +1,17 @@
-﻿using Core.Entities;
-using Core.Context;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Core.Context;
+using Core.Entities;
 using Core.Services.Base;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Managers {
-    public interface IDeviceManager : IEntityService<DeviceEntity> {
+    public interface IDeviceManager: IEntityService<DeviceEntity> {
         Task<DeviceEntity> FindByImei(string imei);
         Task<DeviceEntity> FindInclude(long id);
     }
 
-    public class DeviceManager : AsyncEntityService<DeviceEntity>, IDeviceManager {
+    public class DeviceManager: AsyncEntityService<DeviceEntity>, IDeviceManager {
         public DeviceManager(IApplicationContext context) : base(context) { }
 
         public async Task<DeviceEntity> FindByImei(string imei) {

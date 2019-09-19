@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Core.Entities.Base;
 using Core.Entities;
+using Core.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Core.Context {
-    public class ApplicationContext : DbContext, IApplicationContext {
+    public class ApplicationContext: DbContext, IApplicationContext {
         /**
          * Первоначальное создание базы. Из консоли исполнить команды:
          * 1. Enable-Migrations
@@ -47,6 +46,8 @@ namespace Core.Context {
         public DbSet<DeviceEntity> Devices { get; set; }
         public DbSet<DeviceLastLocationEntity> DeviceLastLocations { get; set; }
         public DbSet<DeviceLocationEntity> DeviceLocations { get; set; }
+        public DbSet<ProfileCardEntity> ProfileCards { get; set; }
+        public DbSet<ProfileCardMediaEntity> ProfileCardMedias { get; set; }
         #endregion
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
@@ -109,13 +110,13 @@ namespace Core.Context {
                 .Where(x => x.Entity is IAuditableEntity
                     && (x.State == EntityState.Added || x.State == EntityState.Modified));
 
-            foreach (var entry in modifiedEntries) {
+            foreach(var entry in modifiedEntries) {
                 IAuditableEntity entity = entry.Entity as IAuditableEntity;
-                if (entity != null) {
-                    string identityName = Thread.CurrentPrincipal.Identity.Name;
+                if(entity != null) {
+                    string identityName = "";// Thread.CurrentPrincipal.Identity.Name;
                     DateTime now = DateTime.UtcNow;
 
-                    if (entry.State == EntityState.Added) {
+                    if(entry.State == EntityState.Added) {
                         entity.CreatedBy = identityName;
                         entity.CreatedDate = now;
                     } else {
@@ -131,17 +132,17 @@ namespace Core.Context {
                 saveFailed = false;
                 try {
                     return await base.SaveChangesAsync();
-                } catch (DbUpdateConcurrencyException) {
+                } catch(DbUpdateConcurrencyException) {
                     saveFailed = true;
                     return -1001;
-                } catch (DbUpdateException) {
+                } catch(DbUpdateException) {
                     saveFailed = true;
                     return -1002;
-                } catch (Exception) {
+                } catch(Exception) {
                     saveFailed = true;
                     return -1003;
                 }
-            } while (saveFailed);
+            } while(saveFailed);
         }
 
         //private static Exception HandleDbUpdateException(DbUpdateException dbu) {

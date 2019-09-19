@@ -27,7 +27,7 @@
         this.hubConnection.on("changeDevicesLocation", (data) => {
             this._changeDevicesLocation(data);
         });
-        this.hubConnection.onclose(async () => { await this._hubStartConnection(); });
+        this.hubConnection.onclose(async () => { setTimeout(() => this._hubStartConnection(), 10000); });
         this._hubStartConnection();
 
     }
@@ -77,7 +77,9 @@
             var item = container.find(`div.device-list-body div[name=${data.id}]`);
             if (item.length === 0) {
                 let link = $(`<div class='list-group-item list-group-item-action' name='${data.id}'>
-                                <a href='#' >${data.deviceName} <small class='d-block'><em>последние изменения:</em> ${data.timestamp}</small></a>
+                                ${data.deviceName || "Не определен"} 
+                                <span><a href=''><i class='fa fa-bullseye-pointer'></i></a></span>
+                                <span class='d-block'>последние изменения: ${data.timestamp}</span>
                               </div>`).on('click', (e) => {
                         this.map.setView(x.getLatLng(), 13); //фокус на маркер
                         this._showDeviceInfo(data);

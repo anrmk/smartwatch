@@ -1,13 +1,13 @@
-﻿using Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Core.Dto;
-using Core.Models;
 using AutoMapper;
-using Core.Managers;
+using Core.Dto;
+using Core.Entities;
 using Core.Extensions;
+using Core.Managers;
+using Core.Models;
 
 namespace Core.Services.Business {
     public interface ILocationBusinessService {
@@ -26,13 +26,13 @@ namespace Core.Services.Business {
         Task<IEnumerable<DeviceLocationDto>> GetDevicesLastLocation();
     }
 
-    public class LocationBusinessService : ILocationBusinessService {
+    public class LocationBusinessService: ILocationBusinessService {
         private readonly IDeviceManager deviceManager;
         private readonly IDeviceLocationManager deviceLocationManager;
         private readonly IDeviceLastLocationManager deviceLastLocationManager;
 
         public LocationBusinessService(IDeviceManager deviceService, IDeviceLocationManager deviceLocationManager, IDeviceLastLocationManager deviceLastLocationManager) {
-            this.deviceManager = deviceService;
+            deviceManager = deviceService;
             this.deviceLocationManager = deviceLocationManager;
             this.deviceLastLocationManager = deviceLastLocationManager;
         }
@@ -64,7 +64,7 @@ namespace Core.Services.Business {
             var list = tuple.Item1;
             var count = tuple.Item2;
 
-            if (count == 0)
+            if(count == 0)
                 return new Pager<DeviceDto>(new List<DeviceDto>(), 0, offset, limit);
 
             var page = (offset + limit) / limit;
@@ -88,7 +88,7 @@ namespace Core.Services.Business {
 
         public async Task<bool> DeleteDevice(long id) {
             var item = await deviceManager.FindInclude(id);
-            if (item != null) {
+            if(item != null) {
                 var result = await deviceManager.Delete(item);
                 return result != 0;
             }
@@ -124,9 +124,9 @@ namespace Core.Services.Business {
         /// <returns>true - координаты зарегистрированы; false - данные не зарегистрированны</returns>
         public async Task<DeviceLocationDto> InsertDeviceLocation(DeviceDto deviceDto, DeviceLocationDto deviceLocationDto) {
             var deviceItem = await deviceManager.FindByImei(deviceDto.Imei);
-            if (deviceItem == null) {
+            if(deviceItem == null) {
                 deviceItem = await deviceManager.Create(Mapper.Map<DeviceEntity>(deviceDto));
-                if (deviceItem == null)
+                if(deviceItem == null)
                     return null;
             }
 
