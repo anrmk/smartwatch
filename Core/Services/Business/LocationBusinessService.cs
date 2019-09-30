@@ -49,7 +49,7 @@ namespace Core.Services.Business {
         }
 
         public async Task<IEnumerable<DeviceDto>> GetDevices() {
-            var result = await deviceManager.All();
+            var result = await deviceManager.FindAllInclude();
             return Mapper.Map<List<DeviceDto>>(result);
         }
 
@@ -112,7 +112,8 @@ namespace Core.Services.Business {
         /// <returns></returns>
         public async Task<IEnumerable<DeviceLocationDto>> GetDevicesLastLocation() {
             var result = await deviceLastLocationManager.FindAll();
-            return Mapper.Map<List<DeviceLocationDto>>(result);
+            var test = Mapper.Map<List<DeviceLocationDto>>(result);
+            return test;
         }
 
         #endregion

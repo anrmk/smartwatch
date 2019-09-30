@@ -54,6 +54,16 @@ namespace SmartWatch.Controllers {
         }
 
         [HttpGet]
+        [Route("device/{id}")]
+        public async Task<IActionResult> GetDevice(long id) {
+            var result = await LocationService.GetDevice(id);
+            if(result == null) {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        [HttpGet]
         [Route("{id}/locations")]
         public async Task<IActionResult> GetLocations(long id) {
             var result = await LocationService.GetDevicesLocation(id);

@@ -9,7 +9,7 @@
     <div class="table-toolbar mb-3">
         <a name="createBtn" data-action="create" class="btn btn-outline-secondary" href="@Url.Action("create", new {controller = "Device", Area = "Admin" })"><i class="fa fa-plus mr-1"></i> Создать</a>
     </div>
-    
+
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover table-sm table-container"
                data-url="/api/device/list" data-toggle="table"
@@ -36,18 +36,26 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/map-controller.js" asp-append-version="true"></script>
     <script src="~/lib/highcharts/highcharts.js" asp-append-version="true"></script>
 
     <script type="text/javascript">
         function operateFormatter(value, row, index) {
             return [
-                `<a class="chart mr-2" href="javascript:void(0)" title="Редактировать"><i class="fa fa-chart-bar"></i></a>
-                         <a class="edit mr-2" href="javascript:void(0)" title="Редактировать"><i class="fa fa-edit"></i></a>
-                         <a class="remove" href="javascript:void(0)" title="Удалить"><i class="fa fa-trash"></i></a>`
+                `<a class="map mr-2" href="javascript:void(0)" title="Показать на карте"><i class="fa fa-map-marker-alt"></i></a>
+                     <a class="chart mr-2" href="javascript:void(0)" title="График GPS отклонений"><i class="fa fa-chart-bar"></i></a>
+                     <a class="edit mr-2" href="javascript:void(0)" title="Редактировать"><i class="fa fa-edit"></i></a>
+                     <a class="remove" href="javascript:void(0)" title="Удалить"><i class="fa fa-trash"></i></a>`
             ].join('')
         }
 
         window.operateEvents = {
+            'click .map': function (e, value, row, index) {
+                $('.modal').off('show.bs.modal').on('show.bs.modal', function () {
+                    var map = $('<div class=\'map-container\' id=\'dialogMapContainer\' style=\'height:300px\'></div>').appendTo('.modal-body');
+                    new MapController({ controller: '/api/devicelocation', containerInfo: '.sidebar-content', mapContainer: 'dialogMapContainer' });
+                }).modal();
+            },
             'click .edit': function (e, value, row, index) {
                 window.location = `/admin/device/edit/${row.id}`
             },
@@ -78,20 +86,19 @@
                 }
 
                 $.ajax(options).done((data, status, jqXHR) => {
-                    $('.modal').on('shown.bs.modal', function () {
-                         Highcharts.chart('modalContent', $.extend({
-                             title: {
-                                 text: 'Устройство'
-                             },
- 
-                             subtitle: {
-                                 text: 'Количество отклонений (точности) координат устройства за месяц'
-                             },
- 
-                             xAxis: {
-                                 categories: data[0].categories
-                             }
-                         }, data[0]))
+                    $('.modal').off('show.bs.modal').on('show.bs.modal', function () {
+                        $('#modalTitle').text('График отклонений текущей позиции по GPS')
+                        Highcharts.chart('modalBody', $.extend({
+                            title: {
+                                text: `Устройство: (IMEI) ${row.imei}`
+                            },
+                            subtitle: {
+                                text: 'Количество отклонений (точности) координат устройства за месяц'
+                            },
+                            xAxis: {
+                                categories: data[0].categories
+                            }
+                        }, data[0]))
                     }).modal();
                 });
             }

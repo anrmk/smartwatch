@@ -10,5 +10,9 @@
         public string Idiom { get; set; }
         //public DeviceLocationDto Location { get; set; }
         public int Status { get; set; }
+
+        public ProfileCardDto Profile { get; set; }
+        //public string ProfileImage { get; set; }
+       // public ProfileCardMediaDto Media { get; set; }
     }
 }

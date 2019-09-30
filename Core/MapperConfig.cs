@@ -6,10 +6,14 @@ using Core.Entities;
 namespace Core {
     public class MapperConfig: Profile {
         public MapperConfig() {
-            CreateMap<DeviceEntity, DeviceDto>().ReverseMap();
+            CreateMap<DeviceEntity, DeviceDto>()
+                //.ForMember(d => d.ProfileName, o => o.MapFrom(s => s.ProfileCard != null ? string.Format("{0} {1} {2}", s.ProfileCard.Name, s.ProfileCard.Surname, s.ProfileCard.Middlename) : s.Name))
+                .ForMember(d => d.Profile, o => o.MapFrom(s => s.ProfileCard))
+                .ReverseMap();
             CreateMap<DeviceLocationEntity, DeviceLocationDto>()
                 .ForMember(d => d.DeviceId, o => o.MapFrom(s => s.DeviceEntity_Id))
                 .ForMember(d => d.DeviceName, o => o.MapFrom(s => s.Device.Name))
+                .ForMember(d => d.Timestamp, o => o.MapFrom(s =>  s.Timestamp.ToUnixTimeMilliseconds()))
                 .ReverseMap()
                 .ForMember(d => d.DeviceEntity_Id, o => o.MapFrom(s => s.DeviceId))
                 .ForMember(d => d.Timestamp, o => o.MapFrom(s => DateTimeOffset.FromUnixTimeMilliseconds(s.Timestamp)));
@@ -17,6 +21,7 @@ namespace Core {
             CreateMap<DeviceLastLocationEntity, DeviceLocationDto>()
                 .ForMember(d => d.DeviceId, o => o.MapFrom(s => s.DeviceEntity_Id))
                 .ForMember(d => d.DeviceName, o => o.MapFrom(s => s.Device.Name))
+                .ForMember(d => d.Timestamp, o => o.MapFrom(s => s.Timestamp.ToUnixTimeMilliseconds()))
                 .ReverseMap()
                 .ForMember(d => d.DeviceEntity_Id, o => o.MapFrom(s => s.DeviceId))
                 .ForMember(d => d.Timestamp, o => o.MapFrom(s => DateTimeOffset.FromUnixTimeMilliseconds(s.Timestamp)));

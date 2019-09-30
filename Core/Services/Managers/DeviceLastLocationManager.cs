@@ -15,7 +15,10 @@ namespace Core.Managers {
         }
 
         public async Task<List<DeviceLastLocationEntity>> FindAll() {
-            return await DbSet.Include(x => x.Device).ToListAsync();
+            return await DbSet
+                .Include(x => x.Device)
+                .Include(x => x.Device.ProfileCard)
+                .ToListAsync();
         }
     }
 }
