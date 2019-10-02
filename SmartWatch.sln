@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartWatch", "SmartWatch\SmartWatch.csproj", "{6DDC3B3C-C3E4-4845-8C3F-5D4900004F5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartWatch", "SmartWatch\SmartWatch.csproj", "{6DDC3B3C-C3E4-4845-8C3F-5D4900004F5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{7A52A7C2-82EF-4405-BB7D-7932D62E63D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{7A52A7C2-82EF-4405-BB7D-7932D62E63D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

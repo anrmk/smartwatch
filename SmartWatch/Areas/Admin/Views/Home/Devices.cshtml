@@ -53,7 +53,13 @@
             'click .map': function (e, value, row, index) {
                 $('.modal').off('show.bs.modal').on('show.bs.modal', function () {
                     var map = $('<div class=\'map-container\' id=\'dialogMapContainer\' style=\'height:300px\'></div>').appendTo('.modal-body');
-                    new MapController({ controller: '/api/devicelocation', containerInfo: '.sidebar-content', mapContainer: 'dialogMapContainer' });
+                    var mapc = new MapController({
+                        'controller': '/api/devicelocation',
+                        'mapContainer': 'dialogMapContainer',
+                        'callback': function (e) {
+                            e.focus(row.id)
+                        }
+                    });
                 }).modal();
             },
             'click .edit': function (e, value, row, index) {

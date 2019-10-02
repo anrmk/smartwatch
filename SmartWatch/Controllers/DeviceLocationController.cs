@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,8 +66,8 @@ namespace SmartWatch.Controllers {
 
         [HttpGet]
         [Route("{id}/locations")]
-        public async Task<IActionResult> GetLocations(long id) {
-            var result = await LocationService.GetDevicesLocation(id);
+        public async Task<IActionResult> GetLocations(long id, DateTime start, DateTime end) {
+            var result = await LocationService.GetDevicesLocation(id, start, end);
             return Ok(result.ToList());
         }
 

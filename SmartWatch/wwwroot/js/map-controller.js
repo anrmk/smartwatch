@@ -3,19 +3,23 @@
         this.options = $.extend({
             'controller': '/',
             'mapContainer': 'map-container',
+            'center': [43.25654, 76.92848],
+            'zoom': 13,
         }, options);
 
-        this.markers = { devices: {}, onchange: async () => { /*this._showDeviceList();*/ } }; //стэк маркеров
+        this.markers = { devices: {}, circles: {}, onchange: async () => { /*this._showDeviceList();*/ } }; //стэк маркеров
         this.historyLine = null; //стек исторической линии на карте
 
         this.hubConnection = null; //соединение с хабом signalR
 
         this._mapInit();
         this._hubInit();
+
+        callback(this);
     }
 
     _mapInit() {
-        this.map = L.map(this.options.mapContainer).setView([43.25654, 76.92848], 13);
+        this.map = L.map(this.options.mapContainer).setView(this.options.center, this.options.zoom);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: ''
@@ -43,16 +47,23 @@
     ///Изменить позиционирование устройства
     _changeDevicesLocation(data) {
         data.map((x, idx) => {
-            let marker;
+            let marker, circle;
             let latlng = L.latLng(x.latitude, x.longitude, x.altitude);
 
             if (this.markers.devices[x.deviceId] !== undefined) {
                 marker = this.markers.devices[x.deviceId];
                 marker.setLatLng(latlng).update();
+
+                circle = this.markers.circles[x.deviceId];
+                circle.setRadius(x.accuracy).setLatLng(latlng);
+
             } else {
                 marker = new L.marker(latlng, { 'draggable': false, 'riseOnHover': true, 'data': x });
                 marker.addTo(this.map);
                 this.markers.devices[x.deviceId] = marker;
+
+                circle = L.circle(latlng, { 'radius': x.accuracy }).addTo(this.map);
+                this.markers.circles[x.deviceId] = circle;
 
                 this.markers.onchange();
             }
@@ -64,7 +75,14 @@
         if (this.historyLine !== null)
             this.map.removeLayer(this.historyLine);
 
-        $.ajax(`${this.options.controller}/${id}/locations`).done((data, status, jqXHR) => {
+        var startDate = $('[name=StartFrom]').val();
+        var endDate = $('[name=EndTill]').val();
+
+        $.ajax({
+            url: `${this.options.controller}/${id}/locations`,
+            data: { start: startDate, end: endDate }
+        }).done((data, status, jqXHR) => {
+            this.focus(id);
             this.pointList = data.map((x, idx) => {
                 return new L.latLng(x.latitude, x.longitude);
             });
@@ -80,7 +98,7 @@
         if (marker != null) {
             var options = marker.options.data;
             marker.bindPopup(`<strong>${options.deviceName}</strong>`).openPopup();
-            this.map.setView(marker.getLatLng(), 18); //фокус на маркер
+            this.map.panTo(marker.getLatLng()); //фокус на маркер
         }
     }
 

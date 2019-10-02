@@ -84,21 +84,13 @@ namespace Core.Services.Business {
         public async Task<ProfileCardDto> UpdateProfileCardAdditional(string username, long id, ProfileCardAdditionalDto dto) {
             var item = await profileCardManager.FindInclude(id);
             var item2 = Mapper.Map(dto, item);
-            //item2.Device.Clear();
 
             item = await profileCardManager.UpdateType(item2);
-
-            //if(dto.DeviceId != null && dto.DeviceId.Count > 0) {
-            //    foreach(var d in dto.DeviceId) {
-            //        var device = await deviceManager.Find(d.Id);
-
-            //        if(device != null) {
-            //            device.ProfileCardEntityId = device.Id;
-            //            await deviceManager.Update(device);
-            //           // item.Device.Add(device);
-            //        }
-            //    }
-            //}
+            var ditem = await deviceManager.FindInclude(dto.DeviceId ?? 0);
+            if(ditem != null) {
+                ditem.ProfileCardEntity_Id = item.Id;
+                await deviceManager.UpdateType(ditem);
+            }
 
             return Mapper.Map<ProfileCardDto>(item);
         }

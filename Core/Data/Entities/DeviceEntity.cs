@@ -42,7 +42,7 @@ namespace Core.Entities {
         public string Idiom { get; set; }
 
         [ForeignKey("ProfileCard")]
-        public long? ProfileCardEntityId { get; set; }
+        public long? ProfileCardEntity_Id { get; set; }
         public virtual ProfileCardEntity ProfileCard { get; set; }
 
         /// <summary>

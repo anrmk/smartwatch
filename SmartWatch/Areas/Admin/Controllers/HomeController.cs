@@ -9,8 +9,8 @@ namespace SmartWatch.Areas.Admin.Controllers {
         [Route("[area]/[controller]/index")]
         public IActionResult Index() {
             var item = new IndicatorViewModel() {
-                StartFrom = DateTime.Now.AddDays(-1).ToString("dd.MM.yyyy"),
-                EndTill = DateTime.Now.ToString("dd.MM.yyyy")
+                StartFrom = DateTime.Now.AddDays(-1),
+                EndTill = DateTime.Now.AddHours(6)
             };
 
             return View(item);

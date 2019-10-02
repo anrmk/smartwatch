@@ -22,7 +22,7 @@ namespace Core.Services.Business {
         Task<bool> DeleteDevice(long id);
         Task<DeviceLocationDto> InsertDeviceLocation(DeviceDto deviceDto, DeviceLocationDto locationDto);
 
-        Task<IEnumerable<DeviceLocationDto>> GetDevicesLocation(long id);
+        Task<IEnumerable<DeviceLocationDto>> GetDevicesLocation(long id, DateTime start, DateTime end);
         Task<IEnumerable<DeviceLocationDto>> GetDevicesLastLocation();
     }
 
@@ -101,8 +101,8 @@ namespace Core.Services.Business {
         /// Получение координат устройств
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<DeviceLocationDto>> GetDevicesLocation(long id) {
-            var result = await deviceLocationManager.FindById(id);
+        public async Task<IEnumerable<DeviceLocationDto>> GetDevicesLocation(long id, DateTime start, DateTime end) {
+            var result = await deviceLocationManager.FindById(id, start, end);
             return Mapper.Map<List<DeviceLocationDto>>(result);
         }
 

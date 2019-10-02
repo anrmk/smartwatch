@@ -13,6 +13,6 @@
 
         public ProfileCardDto Profile { get; set; }
         //public string ProfileImage { get; set; }
-       // public ProfileCardMediaDto Media { get; set; }
+        // public ProfileCardMediaDto Media { get; set; }
     }
 }

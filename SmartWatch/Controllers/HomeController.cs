@@ -1,11 +1,17 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SmartWatch.Areas.Admin.Data.ViewModels;
 using SmartWatch.Models;
 
 namespace SmartWatch.Controllers {
     public class HomeController: Controller {
         public IActionResult Index() {
-            return View();
+            var item = new IndicatorViewModel() {
+                StartFrom = DateTime.Now.AddDays(-1),
+                EndTill = DateTime.Now.AddHours(6)
+            };
+            return View(item);
         }
 
         public IActionResult Privacy() {

@@ -44,7 +44,7 @@ namespace Core.Migrations
 
                     b.Property<string>("Platform");
 
-                    b.Property<long?>("ProfileCardEntityId");
+                    b.Property<long?>("ProfileCardEntity_Id");
 
                     b.Property<int>("Status");
 
@@ -57,8 +57,7 @@ namespace Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfileCardEntityId")
-                        .IsUnique();
+                    b.HasIndex("ProfileCardEntity_Id");
 
                     b.ToTable("Devices");
                 });
@@ -216,8 +215,8 @@ namespace Core.Migrations
             modelBuilder.Entity("Core.Entities.DeviceEntity", b =>
                 {
                     b.HasOne("Core.Entities.ProfileCardEntity", "ProfileCard")
-                        .WithOne()
-                        .HasForeignKey("Core.Entities.DeviceEntity", "ProfileCardEntityId");
+                        .WithMany()
+                        .HasForeignKey("ProfileCardEntity_Id");
                 });
 
             modelBuilder.Entity("Core.Entities.DeviceLastLocationEntity", b =>

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SmartWatch.Areas.Admin.Data.ViewModels.IndicatorViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -7,6 +8,19 @@
         <h3><i class="fa fa-clock"></i> Smart Watch</h3>
     </div>
     <div class="sidebar-content">
+        <div class="card text-white bg-primary">
+            <div class="card-header"><h5>Данные за</h5></div>
+            <div class="card-body">
+                <div class="form">
+                    <div class="form-group">
+                        <input asp-for="StartFrom" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="EndTill" class="form-control" required />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-header"><h5>Список устройств:</h5></div>
             <div class="table-responsive">
@@ -38,24 +52,24 @@
         function nameFormatter(value, row, index) {
             if (row.profile === undefined || row.profile === null) {
                 return `<span>${row.name}<br/>
-                          <small class='text-muted'>IMEI: ${row.imei}, EMAIL: ${row.name}</small>
-                        </span>`;
+                                  <small class='text-muted'>IMEI: ${row.imei}, EMAIL: ${row.name}</small>
+                                </span>`;
             } else {
                 return `<div class='media'>
-                          <image src='${row.profile.medias.length > 0 ? row.profile.medias[0].src : ""}' class='mr-2' style='width:32px; height:32px' />
-                          <div class='media-body'>
-                              ${row.profile.general.name} ${row.profile.general.surname} <br/>
-                              <small class='text-muted'>IMEI: ${row.imei}, EMAIL: ${row.name}</small>
-                          </div>
-                        </div>`;
+                                  <image src='${row.profile.medias.length > 0 ? row.profile.medias[0].src : ""}' class='mr-2' style='width:32px; height:32px' />
+                                  <div class='media-body'>
+                                      ${row.profile.general.name} ${row.profile.general.surname} <br/>
+                                      <small class='text-muted'>IMEI: ${row.imei}, EMAIL: ${row.name}</small>
+                                  </div>
+                                </div>`;
             }
         }
 
         function operateFormatter(value, row, index) {
             return [
                 `<a class="info mr-1" href="javascript:void(0)" title="Показать информацию"><i class="fa fa-info-circle"></i></a>
-                 <a class="focus mr-1" href="javascript:void(0)" title="Показать на карте"><i class="fa fa-map-marker-alt"></i></a>
-                 <a class="history" href="javascript:void(0)" title="История перемещения"><i class="fa fa-history"></i></a>`
+                         <a class="focus mr-1" href="javascript:void(0)" title="Показать на карте"><i class="fa fa-map-marker-alt"></i></a>
+                         <a class="history" href="javascript:void(0)" title="История перемещения"><i class="fa fa-history"></i></a>`
             ].join('');
         }
 
@@ -66,39 +80,39 @@
                         $('.modal').off('show.bs.modal').on('show.bs.modal', function () {
                             $('#modalTitle').text('Информация по устройству');
                             var panel = $(`<div class='row'>
-                                             <div class='col-6'>
-                                               <img src='${data.profile !== null && data.profile.medias.length > 0 ? data.profile.medias[0].src : ""}' class='img-fluid' />
-                                             </div>
-                                             <div class='col-6'>
-                                               <h3>Информация по устройству</h3>
-                                               <dl class='row'>
-                                                 <dt class='col-4'>Наименование</dt>
-                                                 <dd class='col-8'>${data.name}</dd>
-                                                 <dt class='col-4'>IMEI</dt>
-                                                 <dd class='col-8'>${data.imei}</dd>
-                                                 <dt class='col-4'>Производитель</dt>
-                                                 <dd class='col-8'>${data.manufacturer} ${data.model}</dd>
-                                                 <dt class='col-4'>Платформа</dt>
-                                                 <dd class='col-8'>${data.platform} ${data.version}</dd>
-                                               </dl>
-                                               <h3>Последние зафиксированные данные</h3>
-                                               <dl class='row'>
-                                                 <dt class='col-4'>Коордитаны (ш,д)</dt>
-                                                 <dd class='col-8'>${data.marker.latitude}, ${data.marker.longitude}</dd>
-                                                 <dt class='col-4'>Точность</dt>
-                                                 <dd class='col-8'>${data.marker.accuracy}</dd>
-                                                 <dt class='col-4'>Высота над у.м.</dt>
-                                                 <dd class='col-8'>${data.marker.altitude}</dd>
-                                                 <dt class='col-4'>Скорость</dt>
-                                                 <dd class='col-8'>${data.marker.speed}</dd>
-                                                 <dt class='col-4'>Ложный провайдер</dt>
-                                                 <dd class='col-8'>${data.marker.isFromMockProvider}</dd>
-                                                 <dt class='col-4'>Отметка времени</dt>
-                                                 <dd class='col-8'>${new Date(data.marker.timestamp).toLocaleString()}</dd>
-                                               </dl>
-                                             </div>
+                                                     <div class='col-6'>
+                                                       <img src='${data.profile !== null && data.profile.medias.length > 0 ? data.profile.medias[0].src : ""}' class='img-fluid' />
+                                                     </div>
+                                                     <div class='col-6'>
+                                                       <h3>Информация по устройству</h3>
+                                                       <dl class='row'>
+                                                         <dt class='col-4'>Наименование</dt>
+                                                         <dd class='col-8'>${data.name}</dd>
+                                                         <dt class='col-4'>IMEI</dt>
+                                                         <dd class='col-8'>${data.imei}</dd>
+                                                         <dt class='col-4'>Производитель</dt>
+                                                         <dd class='col-8'>${data.manufacturer} ${data.model}</dd>
+                                                         <dt class='col-4'>Платформа</dt>
+                                                         <dd class='col-8'>${data.platform} ${data.version}</dd>
+                                                       </dl>
+                                                       <h3>Последние зафиксированные данные</h3>
+                                                       <dl class='row'>
+                                                         <dt class='col-4'>Коордитаны (ш,д)</dt>
+                                                         <dd class='col-8'>${data.marker.latitude}, ${data.marker.longitude}</dd>
+                                                         <dt class='col-4'>Точность</dt>
+                                                         <dd class='col-8'>${data.marker.accuracy} м.</dd>
+                                                         <dt class='col-4'>Высота над у.м.</dt>
+                                                         <dd class='col-8'>${data.marker.altitude}</dd>
+                                                         <dt class='col-4'>Скорость</dt>
+                                                         <dd class='col-8'>${data.marker.speed}</dd>
+                                                         <dt class='col-4'>Ложный провайдер</dt>
+                                                         <dd class='col-8'>${data.marker.isFromMockProvider}</dd>
+                                                         <dt class='col-4'>Отметка времени</dt>
+                                                         <dd class='col-8'>${new Date(data.marker.timestamp).toLocaleString()}</dd>
+                                                       </dl>
+                                                     </div>
 
-                                           </div>`);
+                                                   </div>`);
                             panel.appendTo('.modal .modal-body');
                         }).modal();
                     }

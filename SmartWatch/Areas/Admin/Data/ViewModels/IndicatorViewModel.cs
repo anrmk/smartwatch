@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartWatch.Areas.Admin.Data.ViewModels {
     public class IndicatorViewModel {
         [Required]
-        public string StartFrom { get; set; }
+        public DateTime StartFrom { get; set; }
 
         [Required]
-        public string EndTill { get; set; }
+        public DateTime EndTill { get; set; }
     }
 }
